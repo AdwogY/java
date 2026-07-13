@@ -1,0 +1,49 @@
+import java.sql.*;
+
+public class LibraryJDBC {
+
+    public static void main(String[] args) {
+
+        String url = "jdbc:mysql://localhost:3306/library";
+        String user = "root";
+        String password = "root";
+
+        try {
+
+            Connection con = DriverManager.getConnection(url, user, password);
+            System.out.println("Connected to Database!");
+
+            String insertQuery = "INSERT INTO books (id, title) VALUES (?, ?)";
+            PreparedStatement psInsert = con.prepareStatement(insertQuery);
+            psInsert.setInt(1, 101);
+            psInsert.setString(2, "Java Programming");
+            psInsert.executeUpdate();
+
+            String updateQuery = "UPDATE books SET title=? WHERE id=?";
+            PreparedStatement psUpdate = con.prepareStatement(updateQuery);
+            psUpdate.setString(1, "Advanced Java");
+            psUpdate.setInt(2, 101);
+            psUpdate.executeUpdate();
+
+            String selectQuery = "SELECT * FROM books";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(selectQuery);
+
+            System.out.println("Library Records:");
+
+            while (rs.next()) {
+                System.out.println(rs.getInt("id") + " - " + rs.getString("title"));
+            }
+
+            String deleteQuery = "DELETE FROM books WHERE id=?";
+            PreparedStatement psDelete = con.prepareStatement(deleteQuery);
+            psDelete.setInt(1, 101);
+            psDelete.executeUpdate();
+
+            con.close();
+
+        } catch (SQLException e) {
+            System.out.println("Database Error: " + e.getMessage());
+        }
+    }
+}
