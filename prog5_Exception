@@ -1,0 +1,106 @@
+import java.io.*;
+import java.util.*;
+
+class InvalidGradeException extends Exception {
+
+    public InvalidGradeException(String message) {
+        super(message);
+    }
+}
+
+class Student {
+
+    String name;
+    int marks;
+
+    Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+}
+
+public class UniversitySystem {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        Student[] students = new Student[3];
+
+        try {
+
+            for (int i = 0; i < students.length; i++) {
+
+                System.out.print("Enter student name: ");
+                String name = sc.nextLine();
+
+                System.out.print("Enter marks: ");
+                String input = sc.nextLine();
+
+                int marks;
+
+                try {
+                    marks = Integer.parseInt(input);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid number format! Setting marks to 0.");
+                    marks = 0;
+                }
+
+                if (marks < 0 || marks > 100) {
+                    throw new InvalidGradeException("Marks should be between 0 and 100.");
+                }
+
+                students[i] = new Student(name, marks);
+            }
+
+            int sum = 0;
+            int count = 0;
+
+            for (Student s : students) {
+                if (s != null) {
+                    sum += s.marks;
+                    count++;
+                }
+            }
+
+            int average = sum / count;
+            System.out.println("Average Marks: " + average);
+
+            System.out.println("Accessing 5th student:");
+            System.out.println(students[4].name);
+
+        } catch (InvalidGradeException e) {
+            System.out.println("InvalidGradeException: " + e.getMessage());
+
+        } catch (ArithmeticException e) {
+            System.out.println("ArithmeticException: Cannot divide by zero.");
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("ArrayIndexOutOfBoundsException: Invalid index.");
+
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException: Student object is null.");
+
+        } finally {
+
+            try {
+
+                FileWriter fw = new FileWriter("grades.txt");
+
+                for (Student s : students) {
+                    if (s != null) {
+                        fw.write(s.name + " - " + s.marks + "\n");
+                    }
+                }
+
+                fw.close();
+
+                System.out.println("Grades written to file successfully.");
+
+            } catch (IOException e) {
+                System.out.println("IOException: Error writing to file.");
+            }
+        }
+
+        sc.close();
+    }
+}
