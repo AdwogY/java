@@ -1,0 +1,94 @@
+import java.util.Random;
+
+class SharedData {
+
+    int n;
+    boolean isEven;
+    boolean isSet = false;
+
+    synchronized void put(int n, boolean isEven) {
+        while (isSet) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+            }
+        }
+
+        this.n = n;
+        this.isEven = isEven;
+        isSet = true;
+
+        System.out.println("Generated: " + n);
+
+        notifyAll();
+    }
+
+    synchronized void get() {
+        while (!isSet) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+            }
+        }
+
+        if (isEven) {
+            System.out.println("Even Handler -> Square: " + (n * n));
+        } else {
+            System.out.println("Odd Handler -> Cube: " + (n * n * n));
+        }
+
+        isSet = false;
+
+        notifyAll();
+    }
+}
+
+class Producer extends Thread {
+
+    SharedData sd;
+
+    Producer(SharedData sd) {
+        this.sd = sd;
+    }
+
+    public void run() {
+        Random rand = new Random();
+
+        for (int i = 0; i < 5; i++) {
+            int num = rand.nextInt(10);
+
+            sd.put(num, num % 2 == 0);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+        }
+    }
+}
+
+class Consumer extends Thread {
+
+    SharedData sd;
+
+    Consumer(SharedData sd) {
+        this.sd = sd;
+    }
+
+    public void run() {
+        for (int i = 0; i < 5; i++) {
+            sd.get();
+        }
+    }
+}
+
+public class ThreadDemo {
+
+    public static void main(String[] args) {
+
+        SharedData sd = new SharedData();
+
+        new Producer(sd).start();
+        new Consumer(sd).start();
+    }
+}
