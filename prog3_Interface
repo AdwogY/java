@@ -1,0 +1,45 @@
+interface VideoContent {
+
+    void playVideo();
+}
+
+interface Assessment {
+
+    void submitAssignment();
+}
+
+class OnlineCourse implements VideoContent, Assessment {
+
+    private String courseTitle;
+
+    public OnlineCourse(String title) {
+        this.courseTitle = title;
+    }
+
+    @Override
+    public void playVideo() {
+        System.out.println("Playing video instruction for: " + courseTitle);
+    }
+
+    @Override
+    public void submitAssignment() {
+        System.out.println("Submitting assignment for: " + courseTitle);
+    }
+}
+
+public class CourseDemo {
+
+    public static void main(String[] args) {
+
+        OnlineCourse javaCourse = new OnlineCourse("Introduction to Java Programming");
+
+        javaCourse.playVideo();
+        javaCourse.submitAssignment();
+
+        VideoContent videoRef = javaCourse;
+        videoRef.playVideo();
+
+        Assessment assessmentRef = javaCourse;
+        assessmentRef.submitAssignment();
+    }
+}
