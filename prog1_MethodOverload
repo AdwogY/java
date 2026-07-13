@@ -1,0 +1,27 @@
+class SalaryCalculator {
+
+    double calculateSalary(double basicSalary) {
+        return basicSalary;
+    }
+
+    double calculateSalary(double basicSalary, double bonus) {
+        return basicSalary + bonus;
+    }
+
+    double calculateSalary(double basicSalary, double bonus, double allowance) {
+        return basicSalary + bonus + allowance;
+    }
+
+    public static void main(String[] args) {
+        SalaryCalculator calculator = new SalaryCalculator();
+
+        double regularSalary = calculator.calculateSalary(50000);
+        System.out.println("Regular Employee Salary: " + regularSalary);
+
+        double bonusSalary = calculator.calculateSalary(50000, 5000);
+        System.out.println("Employee with Bonus Salary: " + bonusSalary);
+
+        double totalSalary = calculator.calculateSalary(50000, 5000, 2000);
+        System.out.println("Employee with Bonus and Allowance Salary: " + totalSalary);
+    }
+}
