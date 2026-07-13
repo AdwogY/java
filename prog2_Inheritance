@@ -1,0 +1,85 @@
+class Person {
+
+    String name;
+    int age;
+    String address;
+
+    Person(String name, int age, String address) {
+        this.name = name;
+        this.age = age;
+        this.address = address;
+    }
+
+    void displayDetails() {
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("Address: " + address);
+    }
+}
+
+class Student extends Person {
+
+    String rollNumber;
+    String course;
+
+    Student(String name, int age, String address, String rollNumber, String course) {
+        super(name, age, address);
+        this.rollNumber = rollNumber;
+        this.course = course;
+    }
+
+    @Override
+    void displayDetails() {
+        System.out.println("--- Student Details ---");
+        super.displayDetails();
+        System.out.println("Roll Number: " + rollNumber);
+        System.out.println("Course: " + course);
+        System.out.println();
+    }
+}
+
+class Faculty extends Person {
+
+    String employeeId;
+    String department;
+
+    Faculty(String name, int age, String address, String employeeId, String department) {
+        super(name, age, address);
+        this.employeeId = employeeId;
+        this.department = department;
+    }
+
+    @Override
+    void displayDetails() {
+        System.out.println("--- Faculty Details ---");
+        super.displayDetails();
+        System.out.println("Employee ID: " + employeeId);
+        System.out.println("Department: " + department);
+        System.out.println();
+    }
+}
+
+public class UniversityManagement {
+
+    public static void main(String[] args) {
+
+        Student s1 = new Student(
+                "Alice Johnson",
+                20,
+                "123 Maple St",
+                "S101",
+                "Computer Science"
+        );
+
+        Faculty f1 = new Faculty(
+                "Dr. Robert Smith",
+                45,
+                "456 Oak Ave",
+                "F202",
+                "Physics"
+        );
+
+        s1.displayDetails();
+        f1.displayDetails();
+    }
+}
